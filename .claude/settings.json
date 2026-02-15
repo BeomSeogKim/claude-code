@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(ls *)",
+      "Bash(find *)",
+      "WebFetch(*)",
+      "WebSearch(*)"
+    ],
+    "deny": []
+  }
+}
