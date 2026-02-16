@@ -8,7 +8,8 @@ Claude Code 기능, 설정, 내부 동작에 대한 지식.
 
 | 파일 | 설명 |
 |------|------|
-| *(아직 문서 없음)* | `/update-knowledge`로 추가 |
+| `prompt-caching.md` | Prompt Caching으로 비용 90% 절감하는 방법 (원리, 구현, 최적화) |
+| `learning-checklist.md` | Claude Code 고급화 학습 로드맵 (TODO 체크리스트) |
 
 ## prompting/
 
@@ -16,7 +17,7 @@ Claude Code 기능, 설정, 내부 동작에 대한 지식.
 
 | 파일 | 설명 |
 |------|------|
-| *(아직 문서 없음)* | `/update-knowledge`로 추가 |
+| `korean-vs-english-prompting.md` | 한국어 vs 영어 프롬프팅 효율성 비교 (토큰, 성능, 비용) |
 
 ## best-practices/
 
