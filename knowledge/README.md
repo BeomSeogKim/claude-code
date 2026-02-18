@@ -10,6 +10,7 @@ Claude Code 기능, 설정, 내부 동작에 대한 지식.
 |------|------|
 | `prompt-caching.md` | Prompt Caching으로 비용 90% 절감하는 방법 (원리, 구현, 최적화) |
 | `learning-checklist.md` | Claude Code 고급화 학습 로드맵 (TODO 체크리스트) |
+| `claude-md-guide.md` | CLAUDE.md 완벽 가이드 (/init, 구조, 베스트 프랙티스) |
 
 ## prompting/
 
