@@ -7,9 +7,9 @@
 
 ## 📊 학습 진행률
 
-- **전체**: 4 / 50 항목
-- **기초**: 4 / 6
-- **중급**: 0 / 12
+- **전체**: 22 / 50 항목
+- **기초**: 6 / 6 ✅
+- **중급**: 12 / 12 ✅
 - **고급**: 0 / 17
 - **전문가**: 0 / 15
 
@@ -24,34 +24,34 @@
 - [x] 위치별 우선순위 이해 (home → project → child)
 
 ### Permission 설정
-- [ ] `/permissions`로 allowlist 설정하기
-- [ ] Sandbox 모드 활용법 학습
+- [x] `/permissions`로 allowlist 설정하기
+- [x] Sandbox 모드 활용법 학습
 
 ### Context 관리
-- [ ] Context window 중요성 이해
-- [ ] `/clear` 사용 타이밍 터득
-- [ ] `/compact` 커스터마이징
-- [ ] Status line으로 토큰 추적 설정
+- [x] Context window 중요성 이해
+- [x] `/clear` 사용 타이밍 터득
+- [x] `/compact` 커스터마이징
+- [x] Status line으로 토큰 추적 설정
 
 ---
 
 ## 🛠️ 2. 핵심 확장 기능 (중급)
 
 ### Skills (자동 실행 기능)
-- [ ] 첫 번째 `SKILL.md` 작성 및 테스트
-- [ ] Frontmatter 옵션 이해 (name, description, disable-model-invocation 등)
-- [ ] Auto-invocation vs Manual invocation 차이 구분
-- [ ] `$ARGUMENTS`, `$0`, `$1` substitution 활용
-- [ ] Supporting files 구조로 복잡한 skill 만들기
-- [ ] `context: fork`로 subagent에서 실행하기
-- [ ] Dynamic context injection (`` !`command` ``) 사용
+- [x] 첫 번째 `SKILL.md` 작성 및 테스트
+- [x] Frontmatter 옵션 이해 (name, description, disable-model-invocation 등)
+- [x] Auto-invocation vs Manual invocation 차이 구분
+- [x] `$ARGUMENTS`, `$0`, `$1` substitution 활용
+- [x] Supporting files 구조로 복잡한 skill 만들기
+- [x] `context: fork`로 subagent에서 실행하기
+- [x] Dynamic context injection (`` !`command` ``) 사용
 
 ### Hooks (이벤트 기반 자동화)
-- [ ] 7가지 이벤트 타입 이해
-- [ ] Command mode vs Prompt mode 차이
-- [ ] `.claude/settings.json`에 첫 hook 설정
-- [ ] Auto-formatting hook 구현
-- [ ] Validation hook 구현
+- [x] 7가지 이벤트 타입 이해
+- [x] Command mode vs Prompt mode 차이
+- [x] `.claude/settings.json`에 첫 hook 설정
+- [x] Auto-formatting hook 구현
+- [x] Validation hook 구현
 
 ### Subagents (전문화된 AI 위임)
 - [ ] 독립 context window 개념 이해
@@ -205,7 +205,55 @@
   - 각 줄마다 "제거하면 실수할까?" 질문하기
   - 모듈화: 큰 프로젝트는 `.claude/rules/` 활용
   - Auto memory: Claude가 스스로 학습 (MEMORY.md)
-- 다음: Permission 설정 학습
+
+**[2026-02-19] ✓ Permission 설정 (2개 항목 완료)**
+- 문서: `permissions.md` 작성 완료
+- 핵심 인사이트:
+  - 평가 순서: deny → ask → allow (첫 매칭 규칙 적용)
+  - 5가지 모드: default / acceptEdits / plan / dontAsk / bypassPermissions
+  - `bypassPermissions`는 격리 환경에서만 사용
+  - Sandbox는 Permission과 별개의 OS 레벨 보안 레이어
+  - curl은 URL 패턴 제한 불안정 → deny + WebFetch 조합 권장
+  - 경로 패턴: `//` 절대, `~/` 홈, `/` settings 기준, `./` 현재 디렉토리
+  - docker, watchman은 sandbox와 비호환 → excludedCommands 필요
+- 기초 완료! 다음: 중급 진입
+
+**[2026-02-19] ✓ Skills (7개 항목 완료)**
+- 문서: `skills.md` 작성 완료
+- 핵심 인사이트:
+  - Progressive Disclosure: 이름 → 설명 → 전체 내용 → 참조 파일 (4단계 점진적 context 로드)
+  - `disable-model-invocation: true`는 부작용 있는 작업(commit, deploy)에 필수
+  - `user-invocable: false`는 배경 지식용 (사용자 호출 불가, Claude 자동 호출만)
+  - `context: fork`로 격리 실행 → 메인 context 오염 방지
+  - `` !`command` ``는 전처리 — Claude가 보기 전에 셸 명령 실행 후 결과 삽입
+  - SKILL.md 500줄 이내 유지, 상세 자료는 supporting files로 분리
+  - Context 예산: skill 설명은 context window의 2%까지 (fallback 16,000자)
+  - 기존 `.claude/commands/` 레거시도 동작하지만 skills가 상위 호환
+- 다음: Hooks (이벤트 기반 자동화)
+
+**[2026-02-19] ✓ Hooks (5개 항목 완료)**
+- 문서: `hooks.md` 작성 완료
+- 핵심 인사이트:
+  - 14가지 이벤트 (초기 7개에서 대폭 확장됨): SessionStart, PreToolUse, PostToolUse, Stop 등
+  - 3가지 타입: command (셸), prompt (LLM 단일턴 Haiku), agent (도구 사용 서브에이전트)
+  - Exit code 2 = 차단 — 도구 호출, prompt 처리, 응답 완료 등을 blocking
+  - Matcher는 정규식: `Edit|Write`, `mcp__.*`, `Bash` 등으로 도구 필터링
+  - 결정론적 실행 — LLM 판단이 아닌 항상 실행되는 보장이 핵심 가치
+  - Skill frontmatter에서 스코프된 hook 가능 (컴포넌트 생명주기에 바인딩)
+  - 보안 주의: 전체 사용자 권한으로 실행, 입력 검증 필수
+  - 디버깅: `claude --debug`, `Ctrl+O` verbose, `/hooks` 메뉴
+- 중급 섹션 완료! 다음: 고급 진입
+
+**[2026-02-19] ✓ Context 관리 (4개 항목 완료)**
+- 문서: `context-management.md` 작성 완료
+- 핵심 인사이트:
+  - `/clear` 습관화: 작업 전환 = 컨텍스트 초기화 (가장 쉽고 효과 큰 절감법)
+  - `/compact [지시]`: 커스텀 지시로 무엇을 유지할지 제어 가능
+  - Status line: `/statusline` 커맨드로 30초 설정, API 토큰 소비 없음
+  - CLAUDE.md 500줄 이하 유지 → 초과분은 Skills로 분리
+  - Subagent에 verbose 작업 위임 → 요약만 메인 context로
+  - MCP 서버는 idle 상태에도 context 점유 → 미사용 서버 비활성화
+  - `Esc` 즉시 중단 → 잘못된 방향 빨리 멈출수록 낭비 토큰 적음
 
 ---
 
